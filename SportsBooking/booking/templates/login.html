@@ -1,0 +1,18 @@
+{% load url from future %}
+<ul>
+    <li>
+        <a rel="nofollow" href="{% url 'socialauth_begin' "twitter" %}">Enter using Twitter</a>
+    </li>
+    <li>
+        <a href="{% url 'socialauth_begin' "facebook" %}">Enter using Facebook</a>
+    </li>
+    <li>
+        <a href="{% url 'socialauth_begin' "google-oauth" %}">Enter using Google</a>
+    </li>
+    <li>
+        <a href="{% url 'socialauth_begin' "google-oauth2" %}">Enter using Google</a>
+    </li>
+    <li>
+        <a href="{% url 'socialauth_begin' "yahoo" %}">Enter using Yahoo</a>
+    </li>
+</ul>

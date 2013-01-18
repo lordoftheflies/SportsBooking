@@ -8,7 +8,8 @@ from social_auth import __version__ as version
 
 def login(request):
     if request.user.is_authenticated():
-        return HttpResponseRedirect('logout')
+  #      return HttpResponseRedirect('logout')
+        return HttpResponse("aaa")
     else:
         return render_to_response('login.html', {'version': version}, RequestContext(request))
 

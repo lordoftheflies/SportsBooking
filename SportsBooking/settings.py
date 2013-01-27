@@ -12,9 +12,9 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'booking',                      # Or path to database file if using sqlite3.
-        'USER': 'booking',                     # Not used with sqlite3.
-        'PASSWORD': 'booking123',                  # Not used with sqlite3.
+        'NAME': 'bookingallauth',                      # Or path to database file if using sqlite3.
+        'USER': 'bookingallauth',                     # Not used with sqlite3.
+        'PASSWORD': 'bookingallauth123',                  # Not used with sqlite3.
         'HOST': 'localhost',                      # Set to empty string for localhost. Not used with sqlite3.
         'PORT': '3306',                      # Set to empty string for default. Not used with sqlite3.
     }
@@ -80,12 +80,18 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # Uncomment the next line to enable the admin:
-    # 'django.contrib.admin',
+    'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
-    'social_auth',
     'SportsBooking.booking',
     'south',
+
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.facebook',
+    'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.twitter',
 )
 
 
@@ -133,63 +139,32 @@ LOGGING = {
     }
 }
 
-AUTHENTICATION_BACKENDS = (
-    'social_auth.backends.twitter.TwitterBackend',
-    'social_auth.backends.facebook.FacebookBackend',
-    'social_auth.backends.google.GoogleOAuthBackend',
-    'social_auth.backends.google.GoogleOAuth2Backend',
-    'social_auth.backends.google.GoogleBackend',
-    'social_auth.backends.yahoo.YahooBackend',
-    #    'social_auth.backends.browserid.BrowserIDBackend',
-    'social_auth.backends.contrib.linkedin.LinkedinBackend',
-    #    'social_auth.backends.contrib.disqus.DisqusBackend',
-    #    'social_auth.backends.contrib.livejournal.LiveJournalBackend',
-    #    'social_auth.backends.contrib.orkut.OrkutBackend',
-    'social_auth.backends.contrib.foursquare.FoursquareBackend',
-    'social_auth.backends.contrib.github.GithubBackend',
-    #    'social_auth.backends.contrib.vkontakte.VKontakteBackend',
-    #    'social_auth.backends.contrib.live.LiveBackend',
-    #    'social_auth.backends.contrib.skyrock.SkyrockBackend',
-    #    'social_auth.backends.contrib.yahoo.YahooOAuthBackend',
-    #    'social_auth.backends.contrib.readability.ReadabilityBackend',
-    'social_auth.backends.OpenIDBackend',
-    'django.contrib.auth.backends.ModelBackend',
-)
-
-
 TEMPLATE_CONTEXT_PROCESSORS = (
-    'social_auth.context_processors.social_auth_by_name_backends',
-    # 'social_auth.context_processors.social_auth_backends',
-    #'social_auth.context_processors.social_auth_by_type_backends',
-    #'social_auth.context_processors.social_auth_login_redirect',
+    "django.core.context_processors.request",
+    "django.contrib.auth.context_processors.auth",
+    "allauth.account.context_processors.account",
+    "allauth.socialaccount.context_processors.socialaccount",
 )
 
-
-LOGIN_URL          = '/login-form/'
-LOGIN_REDIRECT_URL = '/logged-in/'
-LOGIN_ERROR_URL    = '/login-error/'
-
-SOCIAL_AUTH_ENABLED_BACKENDS = ('twitter', 'facebook')
-
-
-SOCIAL_AUTH_COMPLETE_URL_NAME  = 'socialauth_complete'
-SOCIAL_AUTH_ASSOCIATE_URL_NAME = 'socialauth_associate_complete'
-
-SOCIAL_AUTH_CREATE_USERS = True
-SOCIAL_AUTH_FORCE_RANDOM_USERNAME = False
-SOCIAL_AUTH_DEFAULT_USERNAME = 'socialauth_user'
-
-SOCIAL_AUTH_RAISE_EXCEPTIONS = DEBUG
-
-SOCIAL_AUTH_PIPELINE = (
-    'social_auth.backends.pipeline.social.social_auth_user',
-    #'social_auth.backends.pipeline.associate.associate_by_email',
-    'social_auth.backends.pipeline.user.get_username',
-    'social_auth.backends.pipeline.user.create_user',
-    'social_auth.backends.pipeline.social.associate_user',
-    'social_auth.backends.pipeline.social.load_extra_data',
-    'social_auth.backends.pipeline.user.update_user_details',
+AUTHENTICATION_BACKENDS = (
+    # Needed to login by username in Django admin, regardless of `allauth`
+    "django.contrib.auth.backends.ModelBackend",
+    # `allauth` specific authentication methods, such as login by e-mail
+    "allauth.account.auth_backends.AuthenticationBackend",
 )
+
+ACCOUNT_ADAPTER = (
+    "allauth.account.adapter.DefaultAccountAdapter",
+)
+ACCOUNT_AUTHENTICATION_METHOD =("email")
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = ("mandatory")
+ACCOUNT_SIGNUP_PASSWORD_VERIFICATION = True
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_USERNAME_MIN_LENGTH = 2
+ACCOUNT_PASSWORD_MIN_LENGTH = 5
+SOCIALACCOUNT_QUERY_EMAIL = (ACCOUNT_EMAIL_REQUIRED)
+SOCIALACCOUNT_AUTO_SIGNUP = True
 
 try:
     from local_settings import *

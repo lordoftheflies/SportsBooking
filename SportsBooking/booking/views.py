@@ -7,7 +7,7 @@ from social_auth import __version__ as version
 # Create your views here.
 
 def home(request):
-    return render_to_response('index.html')
+    return render(request, 'index.html')
 
 def test(request):
     return render_to_response('test.html')

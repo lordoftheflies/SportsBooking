@@ -6,6 +6,12 @@ from django.contrib.auth import logout as auth_logout
 from social_auth import __version__ as version
 # Create your views here.
 
+def home(request):
+    return render_to_response('index.html')
+
+def test(request):
+    return render_to_response('test.html')
+
 def login(request):
     if request.user.is_authenticated():
   #      return HttpResponseRedirect('logout')

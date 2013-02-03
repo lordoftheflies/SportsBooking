@@ -1,0 +1,22 @@
+{% load url from future %}
+{% load account %}
+{% load i18n %}
+{% load socialaccount %}
+
+{% if user.is_authenticated %}
+    {% user_display user as user_display %}
+    test2
+    <p>Logged in as {{ user_display }}</p>
+
+{% else %}
+    aaaaaa
+    {% if socialaccount.providers %}
+        aaa
+        {% for provider in socialaccount.providers %}
+            test
+            <a href="{% provider_login_url provider.id %}">{{ provider.name }}</a>
+        {% endfor %}
+    {% else %}
+        lalala
+    {% endif %}
+{% endif %}
